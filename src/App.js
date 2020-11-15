@@ -1,25 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from 'react';
+import axios from 'axios';
+class App extends Component {
+	constructor() {
+		super();
+		this.state = {
+			todo: []
+		}
+		
+	}
+	
+	getTodo = async () => {
+		await axios({
+			method: 'get',
+			url: 'https://jsonplaceholder.typicode.com/todos/16',
+			responseType: 'json'
+		  }).then(response => {
+			this.setState({
+				todo:response.data
+			})
+		});
+	}
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+	componentDidMount() {
+		this.getTodo();
+	}
+
+	render() {
+		const { todo } = this.state;
+		return (
+			<div>
+				<p>My Name is {todo.title}</p>
+				<p>Completed is  { todo.completed ? 'true' : 'false' }</p>
+			</div>
+		);
+	}
 }
 
 export default App;
