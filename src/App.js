@@ -5,19 +5,31 @@ import Home from './Views/Home';
 import About from './Views/About';
 import Nav from './Views/Nav';
 import Contact from './Views/Contact';
+import NotMatch from './Views/Errors/NotMatch';
 
 function App() {
 	return (	
 		<div>
 			<BrowserRouter>
-				<Nav />
-				<div className="p-2">
-					<Switch>
-						<Route exact path="/" component={Home} />
-						<Route path="/about" component={About} />
-						<Route path="/contact" component={Contact} />
-					</Switch>
-				</div>
+				<Switch>
+					{/* <Route path="/about" component={About} /> */}
+					<Route exact path="/" component={Home}>
+						<Nav>
+							<Home />
+						</Nav>
+					</Route>
+					<Route path="/about" component={About}>
+						<Nav>
+							<About />
+						</Nav>
+					</Route>
+					<Route path="/contact">
+						<Nav>
+							<Contact />
+						</Nav>
+					</Route>
+					<Route path="*" component={NotMatch} />
+				</Switch>
 			</BrowserRouter>
 		</div>
 	)
