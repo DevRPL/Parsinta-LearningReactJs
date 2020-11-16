@@ -18,6 +18,9 @@ function Router() {
                         <li className="nav-item">
                             <NavLink className="nav-link" to="/contact">Contact</NavLink>
                         </li>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/users">User</NavLink>
+                        </li>
                     </ul>
                 </ul>
             </div>
