@@ -1,16 +1,85 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
-import CardComponent from './Component/CardComponent';
+import axios from 'axios';
 
 function App() {
-	return (
+	const [identifier, setIdentifier] = useState(1);
+	const [user, setUser] = useState([]);
+	// const [users, setUsers] = useState([]);
+	const [loading, setLoading] = useState(false);
+
+	const getUser = async () => {
+		setLoading(true);
+
+		try {
+			await axios({
+				method: 'get',
+				url: `https://jsonplaceholder.typicode.com/users/${identifier}`,
+				responseType: 'json'
+			}).then(response => {
+					setLoading(false);
+					setUser(response.data);
+				//   setUsers(response.data); 
+			});
+		} catch (error) {
+			setLoading(true);	
+			alert(error.message);		
+		}
+	}
+
+	useEffect(() => {
+		getUser();
+		// getUser();
+	}, [ identifier ]);
+	
+
+	return (	
 		<div className="p-5">
 			<div className="container">
 				<div className="row">
-					<CardComponent content={{ title:"Card title 1", img:"https://images.unsplash.com/photo-1561154464-82e9adf32764?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60" }} />
-					<CardComponent content={{ title:"Card title 2", img:"https://images.unsplash.com/photo-1561154464-82e9adf32764?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60" }} />
-					<CardComponent content={{ title:"Card title 3", img:"https://images.unsplash.com/photo-1561154464-82e9adf32764?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60" }} />
-					<CardComponent content={{ title:"Card title 4", img:"https://images.unsplash.com/photo-1561154464-82e9adf32764?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=800&q=60" }} />
+					<div className="table-responsive">
+					<input type="number" min="1" name="identifier" value={identifier} onChange={(e) => setIdentifier(e.target.value) } className="form-control" />
+					 {
+						loading ? <div>Loading . . . </div> : 
+
+						<table className="table">
+							<thead>
+							<tr>
+								<th scope="col">#</th>
+								<th scope="col">name</th>
+								<th scope="col">email</th>
+								<th scope="col">phone</th>
+								<th scope="col">website</th>
+							</tr>
+							</thead>
+							<tbody>
+								{/* {
+								users.map((user, index) => {
+									return (
+										<tr key={index}>
+											<th scope="row">{index + 1}</th>
+											<td>{user.name}</td>
+											<td>{user.email}</td>
+											<td>{user.address.city}</td>
+											<td>{user.phone}</td>
+											<td>{user.website}</td>
+											<td>{user.company.name}</td>
+										</tr>
+									)
+								})
+								
+								} */}
+							<tr>
+								<th scope="row">{user.id}</th>
+								<td>{user.name}</td>	
+								<td>{user.email}</td>
+								<td>{user.phone}</td>
+								<td>{user.website}</td>
+							</tr>
+							</tbody>
+						</table>
+					}
+					</div>
 				</div>
 			</div>
 		</div>
